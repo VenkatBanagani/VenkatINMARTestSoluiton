@@ -1,0 +1,91 @@
+9440940148
+============
+
+1. Customer:
+
+a. CustomerId (primary key, i nt, not null)
+b. Name (varchar(50))
+
+Table Name: tblCustomer
+
+CREATE TABLE tblCustomer
+(
+	CustomerId int Constraint PK_tblCustomer_CustomerId
+)
+
+Queries do not need to be executed. You can use a simple text editor.
+● all the customers whose name begins with "Joe"
+● all the product names ordered by customer "Joe" after ' 11/1/2016'
+● the total amount spend by customer "Joe"
+● all the customer names and count of their orders for orders containing more than one
+product
+
+Queriers:
+========
+● all the customers whose name begins with "Joe"
+
+select * from tblCustomer WHERE Name like 'Joe%';
+
+● all the product names ordered by customer "Joe" after ' 11/1/2016'
+
+SELECT Name FROM tblCustomer TC
+inner 
+join tblOrder TO on TO.CustomerId = TC.CustomerId
+inner 
+join OrderProduct TOP on TOP.OrderId = TO.OrderId
+inner 
+join  tblProduct TP on TP.ProductId = TOP.OrderProductId
+Where TO.CreatedAt >'11/1/2016'
+Order BY TP.Name
+
+
+* the total amount spend by customer "Joe"
+
+  SELECT SUM(TC.Price) 
+  FROM tblOrder TO 
+  inner 
+  join tblCustomer TC ON TC.CustomerId = TO.CustomerId
+  WHERE TC.Name = 'Joe'
+	
+  ● all the customer names and count of their orders for orders containing more than one
+    product
+
+     SELECT TC.Name,Count(TO.OrderId) from tblCustomer TC
+     INNER
+     JOIN tblOrder TO on TO.CustomerId = TC.CustomerId
+     INNER JOIN
+     tblOrderProduct TOP on TOP.OrderProductId = TO.OrderId
+     Where TOP.OrderProductId>2 -- bit to be modify here
+     Group By TC.Name,TO.OrderId
+
+
+Part I - Logical skills:
+==========================
+
+1) Write a program that l oops through [1..100]. It should do the following:
+a) If the number i s divisible by 3, print “fizz”.
+b) If divisible by 5 print “buzz”.
+c) If divisible by 3 & 5, print “fizzbuzz”.
+2) Write a program to reverse a string “abcdef” --> “fedcba” without using the .NET
+reverse() function
+Prompt for the i nput from console and display the output to the console.
+
+  
+     
+     
+     
+
+2. Product:
+a. ProductId (primary key, i nt,on  not null)
+b. Name (varchar(100))
+c. Price (decimal(12, 2))
+
+3. Order
+a. OrderId (primary key, i nt, not null)
+b. CustomerId (foreign key, i nt, not null)
+c. CreatedAt (datetime, not null)
+
+4. OrderProduct
+a. OrderProductId (primary key, i nt, not null)
+b. OrderId (foreign key, i nt, not null)
+c. ProductId (foreign key, i nt, not null)
